@@ -1,0 +1,8 @@
+secret-key = "lMjEWySUeTFsw6xr9aXwTIzOKQXuVNVK"
+tarantool-address = "127.0.0.1:3301"
+
+[tarantool]
+listen-address = "127.0.0.1:3301"
+user = "guest"
+connect-timeout = "1s"
+response-timeout = "1s"
