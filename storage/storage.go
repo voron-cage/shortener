@@ -2,7 +2,6 @@ package storage
 
 import (
 	"context"
-	"fmt"
 	"github.com/tarantool/go-tarantool/v2"
 	"go.uber.org/zap"
 )
@@ -13,6 +12,7 @@ type TarantoolStorage struct {
 }
 
 func NewTarantoolStorage(cfg *TarantoolConfig) *TarantoolStorage {
+	logger := zap.L()
 	ctx, cancel := context.WithTimeout(context.Background(), cfg.ConnectTimeout.Duration)
 	defer cancel()
 	dialer := tarantool.NetDialer{
@@ -25,10 +25,9 @@ func NewTarantoolStorage(cfg *TarantoolConfig) *TarantoolStorage {
 
 	conn, err := tarantool.Connect(ctx, dialer, opts)
 	if err != nil {
-		fmt.Println("Connection refused:", err)
-		return nil
+		logger.Fatal("Connection refused:", zap.Error(err))
 	}
-	return &TarantoolStorage{conn: conn, logger: zap.L()}
+	return &TarantoolStorage{conn: conn, logger: logger}
 }
 
 type TNTStorage interface {
